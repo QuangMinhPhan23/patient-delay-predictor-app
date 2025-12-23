@@ -1,0 +1,42 @@
+name: ml-web-app
+region: nyc
+
+services:
+  # Backend API Service
+  - name: backend
+    github:
+      repo: QuangMinhPhan23/ml_web_app
+      branch: main
+      deploy_on_push: true
+    build_command: pip install -r requirements.txt
+    run_command: python test.py
+    environment_slug: python
+    instance_size_slug: basic-xxs
+    instance_count: 1
+    http_port: 8000
+    health_check:
+      http_path: /health
+    routes:
+      - path: /
+    envs:
+      - key: PORT
+        scope: RUN_TIME
+        value: "8000"
+
+  # Frontend Service
+  - name: frontend
+    github:
+      repo: QuangMinhPhan23/ml_web_app
+      branch: main
+      deploy_on_push: true
+    source_dir: frontend
+    build_command: npm install && npm run build
+    run_command: npm run preview
+    environment_slug: node-js
+    instance_size_slug: basic-xxs
+    instance_count: 1
+    http_port: 3000
+    envs:
+      - key: VITE_API_BASE_URL
+        scope: BUILD_TIME
+        value: ${backend.PUBLIC_URL}
