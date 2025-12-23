@@ -36,6 +36,10 @@ try:
 except FileNotFoundError:
     print("Warning: Model file not found. Please train the model first.")
     model = None
+except Exception as e:
+    print(f"Warning: Could not load model: {e}")
+    print("API will run without model. Please retrain the model with current package versions.")
+    model = None
 
 # Define input schema
 class PatientData(BaseModel):
