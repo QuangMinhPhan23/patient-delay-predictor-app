@@ -23,6 +23,9 @@ app.add_middleware(
         "http://localhost:5173",
         "https://*.ondigitalocean.app",
         "https://ml-web-app-*.ondigitalocean.app",
+        "https://*.onrender.com",
+        "https://ml-web-app-frontend.onrender.com",
+        os.getenv("FRONTEND_URL", ""),
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -240,6 +243,5 @@ async def model_info():
         }
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
