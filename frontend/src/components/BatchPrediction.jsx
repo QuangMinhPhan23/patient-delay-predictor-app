@@ -9,6 +9,15 @@ const BatchPrediction = () => {
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
   const [batchData, setBatchData] = useState('');
+  
+  const getClassLabel = (className) => {
+    const labels = {
+      'class_0': 'Delirium Not Assessed',
+      'class_1': 'Assessed - No Delirium Identified',
+      'class_2': 'Assessed - Delirium Identified'
+    };
+    return labels[className] || className;
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -106,7 +115,7 @@ const BatchPrediction = () => {
             <CardTitle>Batch Prediction</CardTitle>
           </div>
           <CardDescription>
-            Upload or paste JSON data for multiple patient predictions
+            Upload or paste JSON data for multiple patient post-operative delirium predictions
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -191,14 +200,14 @@ const BatchPrediction = () => {
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium">Patient {pred.patient_index + 1}</span>
                     <span className="px-3 py-1 bg-primary text-primary-foreground rounded-full text-sm font-bold">
-                      Class {pred.predicted_class}
+                      {pred.predicted_label}
                     </span>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-sm">
                     {Object.entries(pred.probabilities).map(([className, prob]) => (
                       <div key={className} className="flex justify-between">
-                        <span className="text-muted-foreground capitalize">
-                          {className.replace('_', ' ')}:
+                        <span className="text-muted-foreground">
+                          {getClassLabel(className)}:
                         </span>
                         <span className="font-medium">{(prob * 100).toFixed(1)}%</span>
                       </div>

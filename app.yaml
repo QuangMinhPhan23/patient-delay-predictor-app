@@ -9,7 +9,7 @@ services:
       branch: main
       deploy_on_push: true
     build_command: pip install -r requirements.txt
-    run_command: python test.py
+    run_command: python api.py
     environment_slug: python
     instance_size_slug: basic-xxs
     instance_count: 1

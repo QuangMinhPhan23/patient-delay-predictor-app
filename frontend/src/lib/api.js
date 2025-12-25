@@ -29,4 +29,8 @@ export const getModelInfo = async () => {
   return response.data;
 };
 
+export const getImageUrl = (imagePath) => {
+  return `${API_BASE_URL}${imagePath}`;
+};
+
 export default api;

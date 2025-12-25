@@ -20,7 +20,7 @@ Then start the API server:
 pip install fastapi uvicorn[standard]
 
 # Start the FastAPI server
-python test.py
+python api.py
 ```
 
 The API will be available at: http://localhost:8000
@@ -47,7 +47,7 @@ The dashboard will be available at: http://localhost:3000
 ```
 .
 ├── model.py                    # Model training script
-├── test.py                     # FastAPI backend server
+├── api.py                     # FastAPI backend server
 ├── test_api.py                 # API testing script
 ├── requirements.txt            # Python dependencies
 ├── best_stacking_model.pkl     # Trained model (generated)
@@ -212,7 +212,7 @@ python test_api.py
 **Frontend won't connect:**
 - Verify backend is running on port 8000
 - Check browser console for errors
-- Ensure CORS is enabled in test.py
+- Ensure CORS is enabled in api.py
 
 **Build errors:**
 - Delete node_modules: `rm -rf frontend/node_modules`

@@ -110,6 +110,6 @@ if __name__ == "__main__":
     except requests.exceptions.ConnectionError:
         print("Error: Could not connect to API server.")
         print("Make sure the server is running on http://localhost:8000")
-        print("Run: python test.py")
+        print("Run: python api.py")
     except Exception as e:
         print(f"Error: {e}")

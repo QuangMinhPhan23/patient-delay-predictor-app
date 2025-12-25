@@ -25,7 +25,7 @@ This application is now configured for deployment on DigitalOcean App Platform.
    - Name: `backend`
    - Source Directory: `/`
    - Build Command: `pip install -r requirements.txt`
-   - Run Command: `python test.py`
+   - Run Command: `python api.py`
    - HTTP Port: `8000`
    - Environment: Python
    - Add environment variable:
@@ -79,7 +79,7 @@ This application is now configured for deployment on DigitalOcean App Platform.
    - Redeploy frontend
 
 3. **Update CORS (if needed)**
-   - If using a custom domain, update the `allow_origins` list in `test.py`
+   - If using a custom domain, update the `allow_origins` list in `api.py`
 
 ## Environment Variables
 
@@ -102,7 +102,7 @@ This application is now configured for deployment on DigitalOcean App Platform.
 - Ensure `model.py` runs successfully during build
 
 ### CORS Errors
-- Verify frontend URL is in the `allow_origins` list in `test.py`
+- Verify frontend URL is in the `allow_origins` list in `api.py`
 - Update and redeploy if necessary
 
 ### Build Failures

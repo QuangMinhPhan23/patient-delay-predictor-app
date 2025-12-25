@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Info, BarChart3, Brain, Layers, TrendingUp, Target } from 'lucide-react';
+import { Info, BarChart3, Brain, Layers, TrendingUp, Target, Image as ImageIcon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './Card';
 import { Button } from './Button';
-import { getModelInfo } from '../lib/api';
+import { getModelInfo, getImageUrl } from '../lib/api';
 
 const ModelInfo = () => {
   const [loading, setLoading] = useState(false);
@@ -83,7 +83,7 @@ const ModelInfo = () => {
             </Button>
           </div>
           <CardDescription>
-            Stacking ensemble model configuration and details
+            Stacking ensemble model for predicting post-operative delirium based on pre-operative patient characteristics
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -218,6 +218,125 @@ const ModelInfo = () => {
               </div>
             </CardContent>
           </Card>
+        </>
+      )}
+
+      {modelInfo.evaluation_images && Object.keys(modelInfo.evaluation_images).length > 0 && (
+        <>
+          <div className="flex items-center space-x-2 mb-4">
+            <ImageIcon className="h-6 w-6 text-primary" />
+            <h2 className="text-2xl font-bold">Evaluation Metrics Visualizations</h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {modelInfo.evaluation_images.roc_curve && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>ROC Curve</CardTitle>
+                  <CardDescription>
+                    Receiver Operating Characteristic curve showing trade-off between True Positive Rate and False Positive Rate
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <img
+                    src={getImageUrl(modelInfo.evaluation_images.roc_curve)}
+                    alt="ROC Curve"
+                    className="w-full h-auto rounded-lg border"
+                  />
+                </CardContent>
+              </Card>
+            )}
+
+            {modelInfo.evaluation_images.precision_recall_curve && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Precision-Recall Curve</CardTitle>
+                  <CardDescription>
+                    Precision-Recall curve for each class showing model performance
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <img
+                    src={getImageUrl(modelInfo.evaluation_images.precision_recall_curve)}
+                    alt="Precision-Recall Curve"
+                    className="w-full h-auto rounded-lg border"
+                  />
+                </CardContent>
+              </Card>
+            )}
+
+            {modelInfo.evaluation_images.confusion_matrix && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Confusion Matrix</CardTitle>
+                  <CardDescription>
+                    Matrix showing actual vs predicted class distribution
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <img
+                    src={getImageUrl(modelInfo.evaluation_images.confusion_matrix)}
+                    alt="Confusion Matrix"
+                    className="w-full h-auto rounded-lg border"
+                  />
+                </CardContent>
+              </Card>
+            )}
+
+            {modelInfo.evaluation_images.metrics_bar_chart && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Performance Metrics</CardTitle>
+                  <CardDescription>
+                    Bar chart comparing accuracy, precision, recall, and F1-score
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <img
+                    src={getImageUrl(modelInfo.evaluation_images.metrics_bar_chart)}
+                    alt="Metrics Bar Chart"
+                    className="w-full h-auto rounded-lg border"
+                  />
+                </CardContent>
+              </Card>
+            )}
+
+            {modelInfo.evaluation_images.classification_report && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Classification Report</CardTitle>
+                  <CardDescription>
+                    Detailed classification metrics heatmap for each class
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <img
+                    src={getImageUrl(modelInfo.evaluation_images.classification_report)}
+                    alt="Classification Report"
+                    className="w-full h-auto rounded-lg border"
+                  />
+                </CardContent>
+              </Card>
+            )}
+
+            {modelInfo.evaluation_images.class_distribution && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Class Distribution</CardTitle>
+                  <CardDescription>
+                    Distribution of classes in the test dataset
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <img
+                    src={getImageUrl(modelInfo.evaluation_images.class_distribution)}
+                    alt="Class Distribution"
+                    className="w-full h-auto rounded-lg border"
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </>
       )}
     </div>

@@ -8,7 +8,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
-COPY test.py .
+COPY api.py .
 COPY model.py .
 COPY *.pkl ./
 COPY *.csv ./
@@ -23,4 +23,4 @@ EXPOSE 8000
 ENV PORT=8000
 
 # Run the application
-CMD ["python", "test.py"]
+CMD ["python", "api.py"]

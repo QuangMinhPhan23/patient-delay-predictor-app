@@ -10,6 +10,15 @@ const SinglePrediction = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   
+  const getClassLabel = (className) => {
+    const labels = {
+      'class_0': 'Delirium Not Assessed',
+      'class_1': 'Assessed - No Delirium Identified',
+      'class_2': 'Assessed - Delirium Identified'
+    };
+    return labels[className] || className;
+  };
+  
   const [formData, setFormData] = useState({
     age: '',
     addelassess: '',
@@ -54,21 +63,21 @@ const SinglePrediction = () => {
 
   const fields = [
     { name: 'age', label: 'Age' },
-    { name: 'addelassess', label: 'Add Del Assess' },
-    { name: 'frailty', label: 'Frailty' },
-    { name: 'cogassess', label: 'Cog Assess' },
-    { name: 'cogstat', label: 'Cog Stat' },
-    { name: 'walk', label: 'Walk' },
-    { name: 'uresidence', label: 'U Residence' },
-    { name: 'ftype', label: 'F Type' },
-    { name: 'side', label: 'Side' },
-    { name: 'afracture', label: 'A Fracture' },
-    { name: 'ptype', label: 'P Type' },
-    { name: 'anaesth', label: 'Anaesth' },
-    { name: 'wbear', label: 'W Bear' },
-    { name: 'pulcers', label: 'P Ulcers' },
-    { name: 'malnutrition', label: 'Malnutrition' },
-    { name: 'delay', label: 'Delay' }
+    { name: 'addelassess', label: 'Delirium Assessment Prior To Surgery' },
+    { name: 'frailty', label: 'Clinical Frailty Scale' },
+    { name: 'cogassess', label: 'Pre-admission Cognitive Assessment' },
+    { name: 'cogstat', label: 'Pre-admission Cognitive Status' },
+    { name: 'walk', label: 'Pre-admission Walking Ability' },
+    { name: 'uresidence', label: 'Usual Place of Residence' },
+    { name: 'ftype', label: 'Type of Fracture' },
+    { name: 'side', label: 'Side of Hip Fracture' },
+    { name: 'afracture', label: 'Atypical Fracture' },
+    { name: 'ptype', label: 'Patient Type' },
+    { name: 'anaesth', label: 'Type of Anaesthesia' },
+    { name: 'wbear', label: 'Postoperative Weight Bearing Status' },
+    { name: 'pulcers', label: 'New Skin Pressure Injuries' },
+    { name: 'malnutrition', label: 'Clinical Malnutrition Assessment' },
+    { name: 'delay', label: 'Surgery Delay' }
   ];
 
   return (
@@ -80,7 +89,7 @@ const SinglePrediction = () => {
             <CardTitle>Single Patient Prediction</CardTitle>
           </div>
           <CardDescription>
-            Enter patient data to get a prediction for delayed assessment
+            Enter patient pre-operative characteristics to predict post-operative delirium assessment
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -136,11 +145,14 @@ const SinglePrediction = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-primary/10 rounded-lg">
                   <span className="text-sm font-medium">Predicted Class</span>
-                  <span className="text-3xl font-bold text-primary">
-                    {result.predicted_class}
+                  <span className="text-2xl font-bold text-primary">
+                    {result.predicted_label}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground">{result.message}</p>
+                <div className="text-sm text-muted-foreground">
+                  <p className="font-medium">Class {result.predicted_class}</p>
+                  <p>{result.message}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -157,8 +169,8 @@ const SinglePrediction = () => {
                 {Object.entries(result.probabilities).map(([className, prob]) => (
                   <div key={className} className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="font-medium capitalize">
-                        {className.replace('_', ' ')}
+                      <span className="font-medium">
+                        {getClassLabel(className)}
                       </span>
                       <span className="text-muted-foreground">
                         {(prob * 100).toFixed(2)}%

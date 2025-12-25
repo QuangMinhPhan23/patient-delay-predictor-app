@@ -19,7 +19,7 @@ This will create `best_stacking_model.pkl` and `model_metrics.pkl`
 
 Start the FastAPI server:
 ```bash
-python test.py
+python api.py
 ```
 
 The API will be available at `http://localhost:8000`
