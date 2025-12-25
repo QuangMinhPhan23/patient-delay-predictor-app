@@ -1,12 +1,13 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pydantic
 numpy
 pandas
-scikit-learn
+scikit-learn==1.5.2
 xgboost
 lightgbm
 matplotlib
 seaborn
 optuna
 python-multipart
+joblib
