@@ -1,9 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import pickle
+import joblib
 import pandas as pd
-import numpy as np
 from typing import List, Dict
 import uvicorn
 
@@ -31,7 +30,7 @@ app.add_middleware(
 # Load the trained model
 try:
     with open('best_stacking_model.pkl', 'rb') as f:
-        model = pickle.load(f)
+        model = joblib.load(f)
     print("Model loaded successfully!")
 except FileNotFoundError:
     print("Warning: Model file not found. Please train the model first.")
@@ -62,8 +61,18 @@ class PatientData(BaseModel):
 
 class PredictionResponse(BaseModel):
     predicted_class: int
+    predicted_label: str
     probabilities: Dict[str, float]
     message: str
+
+def get_class_label(class_num: int) -> str:
+    """Convert class number to descriptive text"""
+    labels = {
+        0: "Not assessed",
+        1: "Assessed and not identified",
+        2: "Assessed and identified"
+    }
+    return labels.get(class_num, f"Unknown class: {class_num}")
 
 def preprocess_features(data: pd.DataFrame) -> pd.DataFrame:
     """Apply the same feature engineering as training"""
@@ -125,6 +134,7 @@ async def predict(patient: PatientData):
         
         return PredictionResponse(
             predicted_class=int(prediction),
+            predicted_label=get_class_label(int(prediction)),
             probabilities=prob_dict,
             message="Prediction successful"
         )
@@ -159,6 +169,7 @@ async def predict_batch(patients: List[PatientData]):
             results.append({
                 "patient_index": i,
                 "predicted_class": int(pred),
+                "predicted_label": get_class_label(int(pred)),
                 "probabilities": prob_dict
             })
         
@@ -180,7 +191,7 @@ async def model_info():
     try:
         # Load metrics if available
         with open('model_metrics.pkl', 'rb') as f:
-            metrics = pickle.load(f)
+            metrics = joblib.load(f)
         
         return {
             "model_type": "Stacking Classifier",
